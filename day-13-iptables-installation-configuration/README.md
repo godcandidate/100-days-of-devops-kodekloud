@@ -13,8 +13,13 @@ Automates IPtables installation and firewall configuration across multiple app s
    ```
 
 2. **Prepare files**
+   - Create the required file structure
    ```bash
-   # Create the required file structure
+   # Copy the files into the jumphost or clone the repo
+   sudo dnf install git
+   git clone 100-days-of-devops-kodekloud
+   
+   cd day-13-iptables-installation-configuration
     ├── host_vars/          # Server-specific variables
     │   ├── stapp01.yaml    # Variables for app server 1
     │   ├── stapp02.yaml    # Variables for app server 2  
@@ -22,14 +27,11 @@ Automates IPtables installation and firewall configuration across multiple app s
     ├── inventory.ini       # Server list with connection details
     └── playbook.yaml       # Main automation script
 
-    # Copy the files into the jumphost or clone the repo
-    sudo dnf install git
-    git clone 100-days-of-devops-kodekloud
-    cd day-13-iptables-installation-configuration
+      ```
 
 
-   # Update port in yaml to match the task, current port `8089`
-   ```
+   - Update port in yaml to match the task, current port `8089`
+
 
 2. **Test connectivity**
    ```bash
