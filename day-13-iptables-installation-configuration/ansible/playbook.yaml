@@ -1,0 +1,73 @@
+- name: Secure Apache Port with iptables on App servers
+  hosts: app_servers
+  become: yes
+  gather_facts: no
+  serial: 1
+  
+  vars:
+    app_port: 8089
+    lbr_ip: 172.16.238.14 
+
+  tasks:
+    - name: Install iptables-services package
+      dnf:
+        name: iptables-services
+        state: installed
+      async: 60
+      poll: 10
+
+    - name: Start and enable iptables service
+      systemd:
+        name: iptables
+        enabled: yes
+        state: started
+
+    - name: Flush existing iptables rules
+      iptables:
+        flush: yes
+
+    - name: Allow loopback interface traffic
+      iptables:
+        chain: INPUT
+        in_interface: lo
+        jump: ACCEPT
+
+    - name: Allow established and related connections
+      iptables:
+        chain: INPUT
+        ctstate: ESTABLISHED,RELATED
+        jump: ACCEPT
+
+    - name: Allow SSH on port 22
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 22
+        jump: ACCEPT
+
+    - name: Allow app port only from LBR host
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "{{ app_port }}"
+        source: "{{ lbr_ip }}"
+        jump: ACCEPT
+
+    - name: Drop all other traffic to app port
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: "{{ app_port }}"
+        jump: DROP
+
+    - name: Save iptables rules
+      shell: iptables-save > /etc/sysconfig/iptables
+
+    - name: Show iptables rules
+      command: iptables -L INPUT -n
+      register: result
+      changed_when: false
+
+    - name: Display rules
+      debug:
+        var: result.stdout_lines
