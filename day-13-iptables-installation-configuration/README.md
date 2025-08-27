@@ -30,7 +30,7 @@ Automates IPtables installation and firewall configuration across multiple app s
       ```
 
 
-   - Update port in yaml to match the task, current port `8089`
+   - Update `app_port` variable in playbook.yaml to match the task, current port `8089`
 
 
 2. **Test connectivity**
