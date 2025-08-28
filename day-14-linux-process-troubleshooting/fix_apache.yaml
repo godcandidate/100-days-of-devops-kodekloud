@@ -1,0 +1,46 @@
+- name: Fix Apache Service on App Server
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars:
+    apache_pkg: httpd
+    apache_service: httpd
+    apache_port: 5000
+
+  tasks:
+    - name: Install httpd and psmisc (for fuser)
+      yum:
+        name:
+          - "{{ apache_pkg }}"
+          - psmisc    # provides fuser
+        state: present
+
+    - name: Kill any process using port {{ apache_port }}
+      shell: fuser -k -n tcp {{ apache_port }} || echo "No process to kill or fuser failed"
+      register: kill_result
+      changed_when: "'KILLED' in kill_result.stdout"
+
+    - name: Wait 2 seconds for port to release
+      shell: sleep 2
+      changed_when: false
+
+    - name: Configure Apache to listen on port {{ apache_port }}
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        line: 'Listen {{ apache_port }}'
+        backup: yes
+      notify: Restart Apache
+
+    - name: Start and enable httpd service
+      service:
+        name: "{{ apache_service }}"
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: "{{ apache_service }}"
+        state: restarted

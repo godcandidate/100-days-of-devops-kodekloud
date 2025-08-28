@@ -1,0 +1,36 @@
+- name: Troubleshoot Apache on App Servers
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars:
+    apache_pkg: httpd
+    apache_service: httpd
+    apache_port: 8083
+
+  tasks:
+    - name: Check if httpd is installed
+      command: rpm -q {{ apache_pkg }}
+      register: pkg_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Skip if httpd is not installed
+      meta: end_host
+      when: pkg_check.rc != 0
+
+    - name: Check if httpd service is active
+      command: systemctl is-active {{ apache_service }}
+      register: svc_active
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Skip if httpd is not active
+      meta: end_host
+      when: svc_active.stdout != "active"
+
+    - name: Verify httpd is listening on port {{ apache_port }}
+      shell: ss -tlnp '( dport = :{{ apache_port }} )' | grep -q 'httpd' && echo "httpd_listening" || echo "not_httpd"
+      register: port_proc_check
+      failed_when: false
+      changed_when: false

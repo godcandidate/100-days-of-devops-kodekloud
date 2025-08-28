@@ -17,3 +17,18 @@ This repository contains my automation scripts and solutions for daily DevOps ch
 
 Automating repetitive tasks and complex configurations encountered during the 100 Days of DevOps challenge, focusing on practical solutions that save time and reduce manual errors.
 
+
+
+
+#
+dataowner
+(https://d-9066228f6a.awsapps.com/start)
+#Testing2024
+
+AWS access portal URL: https://d-9066228f6a.awsapps.com/start,
+Username: dataconsumer,
+One-time password: @-EqcQlKAhK-V4QldIAO7X&nkjTSB%1<oUVZi#&hy$WoA!>5azR*Och
+
+AWS access portal URL: https://d-9066228f6a.awsapps.com/start,
+Username: admin,
+One-time password: #Testing2024
