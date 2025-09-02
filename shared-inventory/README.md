@@ -1,7 +1,4 @@
 # Shared Inventory for KodeKloud App Servers on JumpHost
-
-## What This Is
-
 Common Ansible inventory for KodeKloud's 3 app servers used in all challenges.
 
 ## Files
