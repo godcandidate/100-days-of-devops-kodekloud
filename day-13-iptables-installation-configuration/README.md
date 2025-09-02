@@ -8,10 +8,12 @@ Automates IPtables installation and firewall configuration across multiple app s
    [Shared Inventory for KodeKLound App Servers](../shared-inventory/README.md)
 
 
-2. **Run playbook**
+2. **Create playbook**
 - Copy the playbook.yaml in your ansible directory
 
-- Update `app_port` variable in playbook.yaml to match the task, current port `5000`
+- Update `app_port` variable in playbook.yaml to match the task, current port `8089`
+
+## Run Playbooks
 
 - Test your playbook
    ```bash
@@ -19,7 +21,7 @@ Automates IPtables installation and firewall configuration across multiple app s
    ```
 
 
-### Automation Tasks
+## Automation Tasks
 - Installs `iptables-services` package on all servers
 - Configures firewall rules to allow specific port access from load balancer
 - Blocks all other traffic to the application port
