@@ -23,19 +23,23 @@ Common Ansible inventory for KodeKloud's 3 app servers used in all challenges.
 
 - Clone repo
     ```
-        git clone https://github.com/godcandidate/100-days-of-devops-kodekloud.git
+    git clone https://github.com/godcandidate/100-days-of-devops-kodekloud.git
     ```
 
-- Run the inventory setup command
+- Run make the script executable
     ```
-        cd 100-days-of-devops-kodekloud
-        chmod +x setup-inventory.sh
-        ./setup-inventory.sh
+    chmod +x ./100-days-of-devops-kodekloud/setup-inventory.sh
+    ```
+
+    
+- Execute the script
+    ```
+    ./100-days-of-devops-kodekloud/setup-inventory.sh
     ```
 
 - Test connectivity
     ```
-        ansible all -i inventory.ini -m ping
+    ansible all -i inventory.ini -m ping
     ```
 
 
