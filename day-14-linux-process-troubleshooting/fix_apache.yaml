@@ -6,7 +6,7 @@
   vars:
     apache_pkg: httpd
     apache_service: httpd
-    apache_port: 5000
+    apache_port: 8083
 
   tasks:
     - name: Install httpd and psmisc (for fuser)

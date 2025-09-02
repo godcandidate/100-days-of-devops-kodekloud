@@ -5,41 +5,15 @@ Automates IPtables installation and firewall configuration across multiple app s
 
 ## Setup on Jump Host
 
-1. **Install Ansible**
-   ```bash
-   sudo dnf install epel-release -y
-   sudo dnf install ansible -y
-   ansible --version
-   ```
-
-2. **Prepare files**
-   - Create the required file structure
-   ```bash
-   # Copy the files into the jumphost or clone the repo
-   sudo dnf install git
-   git clone 100-days-of-devops-kodekloud
-   
-   cd day-14-linux-process-troubleshooting
-    ├── host_vars/          # Server-specific variables
-    │   ├── stapp01.yaml    # Variables for app server 1
-    │   ├── stapp02.yaml    # Variables for app server 2  
-    │   └── stapp03.yaml    # Variables for app server 3
-    ├── inventory.ini       # Server list with connection details
-    └── troubleshoot_apache.yaml       # Main troubleshoot script
-    └── fix_apache.yaml       # Main fix script
-
-      ```
+1. **Create Inventory**
+- Check a simple guide to have an inventory setup for the app servers
+   [Shared Inventory for KodeKLound App Servers](../shared-inventory/README.md)
 
 
-   - Update `app_port` variable in playbook.yaml to match the task, current port `5000`
+2. **Create playbook files**
+- Copy the playbook files(fix_apache.yaml, troubleshoot_apache.yaml) in your ansible directory
 
-
-2. **Test connectivity**
-   ```bash
-   ansible all -i inventory.ini -m ping
-   ```
-   # check which servers have the apache active
-   ansible -i inventory.ini all -a "systemctl is-active httpd"
+- Update `app_port` variable in playbook files to match the task, current port `8083`
 
 
 3. **Troubleshoot**
