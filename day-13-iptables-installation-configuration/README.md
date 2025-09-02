@@ -1,6 +1,4 @@
 # Ansible IPtables Automation
-## Overview
-
 Automates IPtables installation and firewall configuration across multiple app servers using Ansible.
 
 ## Setup on Jump Host
@@ -12,6 +10,10 @@ Automates IPtables installation and firewall configuration across multiple app s
 
 2. **Run playbook**
 - Copy the playbook.yaml in your ansible directory
+
+- Update `app_port` variable in playbook.yaml to match the task, current port `5000`
+
+- Test your playbook
    ```bash
    ansible-playbook -i inventory.ini playbook.yaml
    ```
