@@ -10,12 +10,8 @@ Automates IPtables installation and firewall configuration across multiple app s
    [Shared Inventory for KodeKLound App Servers](../shared-inventory/README.md)
 
 
-2. **Test connectivity**
-   ```bash
-   ansible all -i inventory.ini -m ping
-   ```
-
-3. **Run playbook to check Apache Health all App servers**
+2. **Run playbook**
+- Copy the playbook.yaml in your ansible directory
    ```bash
    ansible-playbook -i inventory.ini playbook.yaml
    ```
