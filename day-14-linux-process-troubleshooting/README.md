@@ -1,9 +1,7 @@
-# Ansible IPtables Automation
-## Overview
+# Ansible Apache Health Check
+Automates Apache Health Check configuration across multiple app servers using Ansible.
 
-Automates IPtables installation and firewall configuration across multiple app servers using Ansible.
-
-## Setup on Jump Host
+## Setup 
 
 1. **Create Inventory**
 - Check a simple guide to have an inventory setup for the app servers
@@ -16,14 +14,14 @@ Automates IPtables installation and firewall configuration across multiple app s
 - Update `app_port` variable in playbook files to match the task, current port `8083`
 
 
-3. **Troubleshoot**
+## Run Playbooks
+1. **Troubleshoot**
    ```bash
    ansible-playbook -i inventory.ini troubleshoot_apache.yaml
    ```
 
    - found out httpd service status is failed on 'App Server 1`
-
-4. **Fix**
+2. **Fix**
    ```bash
    ansible-playbook -i inventory.ini fix_apache.yaml
    ```
@@ -31,7 +29,7 @@ Automates IPtables installation and firewall configuration across multiple app s
    - found out httpd service status is failed on 'App Server 1`
 
 
-### Troubleshoot Apache Issue with Automation
+## Troubleshoot Apache Issue with Automation
 
 The troubleshooting playbook automatically:
 - Checks Apache service status on all servers
@@ -39,7 +37,7 @@ The troubleshooting playbook automatically:
 - Gathers error logs and configuration details
 - Reports findings for quick problem identification
 
-### Fix Apache Issue with Automation
+## Fix Apache Issue with Automation
 
 The fix playbook automatically:
 - Stops any conflicting processes using the target port
