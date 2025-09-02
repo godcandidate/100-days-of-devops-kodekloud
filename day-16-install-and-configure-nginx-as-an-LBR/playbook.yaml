@@ -1,0 +1,42 @@
+- name: httpd health Check on App Servers
+  hosts: app_servers
+  become: yes
+  gather_facts: no
+
+  vars:
+    apache_pkg: httpd
+    apache_service: httpd
+
+  tasks:
+    - name: Check if httpd is installed
+      command: rpm -q {{ apache_pkg }}
+      register: pkg_check
+      ignore_errors: yes
+
+
+    - name: Check if httpd service is active
+      command: systemctl is-active {{ apache_service }}
+      register: svc_active
+      ignore_errors: yes
+
+    - name: Detect port httpd is listening on
+      shell: |
+        ss -tlnp | awk '/httpd/ && /LISTEN/ {split($4, a, ":"); print a[length(a)]}' | head -1
+      register: port_out
+      changed_when: false
+      failed_when: port_out.stdout is undefined or port_out.stdout == ''
+
+    - name: Set apache_port
+      set_fact:
+        apache_port: "{{ port_out.stdout }}"
+
+    - name: Test if web server responds (curl localhost)
+      uri:
+        url: "http://localhost:{{ apache_port }}"
+        timeout: 5
+      register: result
+      failed_when: result.status != 200
+
+    - name: Success 
+      debug:
+        msg: "httpd OK on {{ inventory_hostname }}: Port {{ apache_port }}, HTTP 200"
