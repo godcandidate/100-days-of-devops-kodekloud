@@ -6,11 +6,6 @@ mkdir -p ansible
 cp shared-inventory/inventory.ini ansible/ 2>/dev/null || true
 cp -r shared-inventory/host_vars ansible/ 2>/dev/null || true
 
-# Clean up
-cd ..
-
-
-echo "📁 All necessary files moved to ansible/"
 
 # Final message
 echo ""
@@ -27,7 +22,10 @@ echo ""
 echo "🚀 Happy automating with Ansible!"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Clean up
 rm -rf 100-days-of-devops-kodekloud
+
+
 
 
 
