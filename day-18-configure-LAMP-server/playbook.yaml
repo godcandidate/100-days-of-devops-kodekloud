@@ -1,0 +1,54 @@
+- name: Configure App Servers for WordPress
+  hosts: app_servers
+  become: yes
+  gather_facts: no
+
+  vars:
+    app_port: 5000
+
+  tasks:
+    - name: Ensure httpd and php are installed
+      yum:
+        name:
+          - httpd
+          - php
+          - php-mysqlnd 
+          - php-gd
+          - php-xml
+          - php-mbstring
+          - php-json
+          - php-cli
+          - php-curl
+        state: present
+
+    - name: Backup original httpd.conf
+      copy:
+        src: /etc/httpd/conf/httpd.conf
+        dest: /etc/httpd/conf/httpd.conf.bak
+        remote_src: yes
+        force: no
+      register: backup_result
+
+    - name: Update Apache Listen port to {{ app_port }}
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        line: "Listen {{ app_port }}"
+        backup: yes
+
+    - name: Start and enable httpd service
+      systemd:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Ensure /var/www/html exists
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+
+    - name: Check if /var/www/html is not empty
+      command: ls /var/www/html
+      register: html_content
+      changed_when: false
