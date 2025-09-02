@@ -33,4 +33,5 @@ Configure nginx on the load balancer server:
 - Install nginx
 - Start and enable the nginx server
 - Update nginx config, the http block with `nginx.conf` file
+- Replace the port with port discovered in playbook results
 
