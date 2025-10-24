@@ -45,7 +45,7 @@ Automating repetitive tasks and complex configurations encountered during the 10
     ```
 
 - Choose your use case
-<p align="center"> <img src="images/repo-setup.png" alt="Repo Setup" width="400"> </p>
+<p align="center"> <img src="images/repo-setup.png" alt="Repo Setup" width="600"> </p>
 
 
 
