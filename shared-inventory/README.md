@@ -13,29 +13,8 @@ Common Ansible inventory for KodeKloud's 3 app servers used in all challenges.
 - **Connection**: Standard SSH with sshpass
 
 ## Install Ansible on Jumphost
-   ```bash
-   sudo dnf install epel-release -y
-   sudo dnf install ansible -y
-   ansible --version
-   ```
-## Usage
-- Ensure you have Ansible installed on your jump host.
-
-- Clone repo
-    ```
-    git clone https://github.com/godcandidate/100-days-of-devops-kodekloud.git
-    ```
-
-- Run make the script executable
-    ```
-    chmod +x ./100-days-of-devops-kodekloud/setup-inventory.sh
-    ```
-
-    
-- Execute the script
-    ```
-    ./100-days-of-devops-kodekloud/setup-inventory.sh
-    ```
+- Check a simple guide to have an inventory setup for the app servers
+   [Setup Repo on Jumphost](../README.md)
 
 - Test connectivity
     ```
