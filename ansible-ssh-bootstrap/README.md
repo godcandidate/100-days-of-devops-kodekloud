@@ -2,7 +2,7 @@
 
 This Ansible automation sets up **passwordless SSH authentication** between a source server and one or more target servers.
 
-<p align="center"> <img src="images/ssh-bootstrap.png" alt="SSH Bootstrap Architecture" width="600"> </p>
+<p align="center"> <img src="../images/ssh-bootstrap.png" alt="SSH Bootstrap Architecture" width="600"> </p>
 
 It automatically:
 - Generates an SSH key pair on the source host (if none exists)
