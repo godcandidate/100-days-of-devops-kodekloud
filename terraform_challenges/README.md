@@ -38,5 +38,14 @@ terraform apply
 
 ## Requirements
 - Terraform CLI installed (version as specified by challenge).
+```
+wget https://releases.hashicorp.com/terraform/1.1.5/terraform_1.1.5_linux_amd64.zip
+
+unzip terraform_1.1.5_linux_amd64.zip
+
+mv terraform /usr/local/bin/
+
+chmod +x /usr/local/bin/terraform
+```
 - Access to relevant cloud accounts or Kubernetes clusters.
 - Properly configured authentication (e.g., kubeconfig for Kubernetes)
