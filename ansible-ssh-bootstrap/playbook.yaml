@@ -1,0 +1,48 @@
+# Generate an SSH key on a source server
+- name: Generate SSH key on source server
+  hosts: source
+  become: yes
+
+  vars:
+    ssh_key_path: "/home/{{ ansible_user }}/.ssh/id_rsa"
+
+  tasks:
+    - name: Ensure .ssh directory exists
+      file:
+        path: ~/.ssh
+        state: directory
+        mode: '0700'
+
+    - name: Generate SSH key if it does not exist
+      openssh_keypair:
+        path: "{{ ssh_key_path }}"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+      register: ssh_keypair_result
+
+    - name: Display key generation info
+      debug:
+        msg: "Key generated at {{ ssh_key_path }}"
+
+# Copy the generated SSH public key to target servers
+- name: Copy SSH public key from source to target servers
+  hosts: targets
+  become: yes
+
+  vars:
+    ssh_pub_path: "/home/{{ ansible_user }}/.ssh/id_rsa.pub"
+
+  tasks:
+    - name: Fetch SSH public key from source server
+      delegate_to: "{{ groups['source'][0] }}"
+      slurp:
+        src: "{{ ssh_pub_path }}"
+      register: ssh_pub_content
+
+    - name: Authorize SSH public key for target user
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ ssh_pub_content['content'] | b64decode }}"
