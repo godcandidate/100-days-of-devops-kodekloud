@@ -1,0 +1,73 @@
+# Generate an SSH key on a source server
+- name: Generate SSH key on source server
+  hosts: source
+  gather_facts: no
+
+  vars:
+    ssh_key_path: "/var/lib/jenkins/.ssh/id_rsa"
+
+  tasks:
+    - name: Ensure .ssh directory exists
+      file:
+        path: "{{ ssh_key_path | dirname }}"
+        state: directory
+        mode: '0700'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Generate SSH key if it does not exist
+      openssh_keypair:
+        path: "{{ ssh_key_path }}"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+      register: ssh_keypair_result
+
+    - name: Display key generation info
+      debug:
+        msg: "Key generated at {{ ssh_key_path }}"
+
+  # Copy the generated SSH public key to target servers
+- name: Copy SSH public key from source to target servers
+  hosts: targets
+  gather_facts: no
+
+  vars:
+    ssh_pub_path: "/var/lib/jenkins/.ssh/id_rsa.pub"
+
+  tasks:
+    - name: Fetch SSH public key from source server
+      delegate_to: "{{ groups['source'][0] }}"
+      slurp:
+        src: "{{ ssh_pub_path }}"
+      register: ssh_pub_content
+
+    - name: Authorize SSH public key for target user
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        state: present
+        key: "{{ ssh_pub_content['content'] | b64decode }}"
+
+#  Install Java on target servers (CentOS Stream 9)
+- name: Install Java on CentOS 9 target servers
+  hosts: targets
+  become: yes
+  gather_facts: yes
+
+  vars:
+    java_package: java-17-openjdk  
+    
+  tasks:
+    - name: Ensure Java is installed
+      ansible.builtin.dnf:
+        name: "{{ java_package }}"
+        state: present
+
+    - name: Verify Java installation
+      ansible.builtin.command: java -version
+      register: java_version
+      changed_when: false
+
+    - debug:
+        var: java_version.stderr_lines
